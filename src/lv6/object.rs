@@ -127,7 +127,6 @@ impl Object {
     }
 
     pub fn from_lev_to_lv6(&mut self) {
-        // TODO: Finish this list.
         *self = match self.0 {
             0 => Self::NONE,
             1 => Self::STINKY,
@@ -153,6 +152,7 @@ impl Object {
             21 => Self::KABOOM_SOUTH_RIGHT,
             22 => Self::KABOOM_WEST_LEFT,
             23 => Self::KABOOM_WEST_RIGHT,
+            // 24 is a white ball that disappears without any fanfare if you touch it, probably a test for bonus coins
             25 => Self::COIN_BONUS,
             26 => Self::FISH,
             27 => Self::WEATHER_SNOW,
