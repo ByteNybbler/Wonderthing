@@ -44,13 +44,22 @@ fn main() -> Result<(), lv6::Error> {
     //lv6.set_names("KOOKY102".to_owned(), "first steps but with friends and advancing spikes".to_owned());
     //let level_content = lv6.borrow_level_content_mut();
 
-    operate_on_folder("TOW-LV6", "TOW-SHADOWS", |lv6| {
+    //lv6.to_file(&mut rng, "")
+
+    // operate_on_folder("TOW-LV6", "TOW-SHADOWS", |lv6| {
+    //     let level_content = lv6.borrow_level_content_mut();
+    //     let tiles = level_content.borrow_tiles_mut();
+    //     tiles.replace_target(Tile::WALL_HEIGHT_1, || Tile::SHADOW_STINKY_BLUE);
+    // })
+
+    operate_on_folder("TOW-LV6", "TOW-SPIKES-SPEED3", |lv6| {
         let level_content = lv6.borrow_level_content_mut();
         let tiles = level_content.borrow_tiles_mut();
-        tiles.replace_target(Tile::WALL_HEIGHT_1, || Tile::SHADOW_STINKY_BLUE);
+        tiles.replace_target(Tile::is_immediately_enterable, || Tile::FLOOR);
+        tiles.replace_target(Tile::is_color_gate, || Tile::FLOOR);
+        tiles.replace_target(Tile::is_liquid, || Tile::FLOOR);
+        level_content.generate_spike_wave(Object::STINKY, 2, 3);
     })
-
-    //lv6.to_file(&mut rng, "")
 }
 
 pub fn convert_tow_to_lv6() -> Result<(), lv6::Error> {

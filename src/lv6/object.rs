@@ -93,6 +93,9 @@ impl Object {
     pub const WEATHER_RAIN: Self = Self(85);
     pub const WEATHER_LIGHTNING: Self = Self(86);
     pub const LIGHTING_RAINBOW: Self = Self(87);
+	pub const LEVELTEX_RAINBOW: Self = Self(88); // Needs Rainbow background before it can do anything.
+	pub const STATUE_ALIEN: Self = Self(89);
+	pub const OBJECT_COUNT: i32 = 90;
 }
 
 impl Object {
@@ -100,7 +103,7 @@ impl Object {
     where
         N: Rng<i32>
     {
-        Object(rng.random_bounded(88))
+        Object(rng.random_bounded(Self::OBJECT_COUNT))
     }
 
     pub fn random_pickup<N>(rng: &mut N) -> Object
