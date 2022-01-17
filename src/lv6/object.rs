@@ -152,7 +152,9 @@ impl Object {
             21 => Self::KABOOM_SOUTH_RIGHT,
             22 => Self::KABOOM_WEST_LEFT,
             23 => Self::KABOOM_WEST_RIGHT,
-            // 24 is a white ball that disappears without any fanfare if you touch it, probably a test for bonus coins
+            // 24 is a white ball that disappears without any fanfare if you touch it.
+            // It was the bonus coin used in the TOW prototype.
+            // Unlike in the prototype, it doesn't add 250 points to your score in the final TOW build.
             25 => Self::COIN_BONUS,
             26 => Self::FISH,
             27 => Self::WEATHER_SNOW,
