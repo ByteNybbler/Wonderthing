@@ -330,12 +330,12 @@ impl<'de> Visitor<'de> for LevelContentVisitor {
         let width = width as usize;
         let height = height as usize;
         let total = width * height;
-        let mut tiles = vec![];
+        let mut tiles = Vec::with_capacity(total);
         for _ in 0..total {
             let id = seq.next_element()?.ok_or_else(|| de::Error::custom("unexpected end of sequence"))?;
             tiles.push(Tile(id));
         }
-        let mut objects = vec![];
+        let mut objects = Vec::with_capacity(total);
         for _ in 0..total {
             let id = seq.next_element()?.ok_or_else(|| de::Error::custom("unexpected end of sequence"))?;
             objects.push(Object(id));
