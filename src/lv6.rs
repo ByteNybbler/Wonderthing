@@ -49,20 +49,20 @@ impl Lv6 {
         }
     }
 
-    pub fn to_file<N>(&mut self, rng: &mut N, output_folder: &str) -> Result<(), Error>
+    pub fn to_file<N>(&mut self, rng: &mut N, output_folder: &str) -> Result<(), Lv6Error>
     where
         N: Rng<i32>
     {
         self.name_data.randomize_level_version(rng);
-        fs::create_dir_all(output_folder).map_err(Error::InputOutput)?;
+        fs::create_dir_all(output_folder).map_err(Lv6Error::InputOutput)?;
         let path = PathBuf::from(output_folder).join(self.name_data.get_filename_with_extension());
-        let file = File::create(path).map_err(Error::InputOutput)?;
-        serde_blitz3d::to_writer(file, self).map_err(Error::Serde)
+        let file = File::create(path).map_err(Lv6Error::InputOutput)?;
+        serde_blitz3d::to_writer(file, self).map_err(Lv6Error::Serde)
     }
 
-    pub fn from_file<P: AsRef<Path>>(path: P) -> Result<Lv6, Error> {
-        let file = File::open(path).map_err(Error::InputOutput)?;
-        serde_blitz3d::from_reader(file).map_err(Error::Serde)
+    pub fn from_file<P: AsRef<Path>>(path: P) -> Result<Lv6, Lv6Error> {
+        let file = File::open(path).map_err(Lv6Error::InputOutput)?;
+        serde_blitz3d::from_reader(file).map_err(Lv6Error::Serde)
     }
 
     pub fn set_names(&mut self, filename: String, level_name: String) {
@@ -117,18 +117,18 @@ impl Lv6 {
 }
 
 #[derive(Debug)]
-pub enum Error {
+pub enum Lv6Error {
     InputOutput(std::io::Error),
     Serde(serde_blitz3d::Error)
 }
 
-impl Display for Error {
+impl Display for Lv6Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            Error::InputOutput(error) => write!(f, "{}", error),
-            Error::Serde(error) => write!(f, "{}", error)
+            Lv6Error::InputOutput(error) => write!(f, "{}", error),
+            Lv6Error::Serde(error) => write!(f, "{}", error)
         }
     }
 }
 
-impl std::error::Error for Error { }
+impl std::error::Error for Lv6Error { }

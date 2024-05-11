@@ -6,7 +6,7 @@ pub use signs::*;
 use serde::{Serialize, Deserialize};
 use std::fs::File;
 use std::path::Path;
-use crate::lv6::{Error, Lv6, TimeLimit, LevelAppearance, LevelContent, Music, Style, Background, CustomContent};
+use crate::lv6::{Lv6Error, Lv6, TimeLimit, LevelAppearance, LevelContent, Music, Style, Background, CustomContent};
 use crate::serde_blitz3d;
 
 #[derive(Serialize, Deserialize)]
@@ -31,14 +31,14 @@ impl Lev {
         }
     }
 
-    pub fn to_file(&self) -> Result<(), Error> {
-        let file = File::create(self.name_data.get_filename_with_extension()).map_err(Error::InputOutput)?;
-        serde_blitz3d::to_writer(file, self).map_err(Error::Serde)
+    pub fn to_file(&self) -> Result<(), Lv6Error> {
+        let file = File::create(self.name_data.get_filename_with_extension()).map_err(Lv6Error::InputOutput)?;
+        serde_blitz3d::to_writer(file, self).map_err(Lv6Error::Serde)
     }
 
-    pub fn from_file<P: AsRef<Path>>(path: P) -> Result<Lev, Error> {
-        let file = File::open(path).map_err(Error::InputOutput)?;
-        serde_blitz3d::from_reader(file).map_err(Error::Serde)
+    pub fn from_file<P: AsRef<Path>>(path: P) -> Result<Lev, Lv6Error> {
+        let file = File::open(path).map_err(Lv6Error::InputOutput)?;
+        serde_blitz3d::from_reader(file).map_err(Lv6Error::Serde)
     }
 
     pub fn set_names(&mut self, filename: String, level_name: String) {

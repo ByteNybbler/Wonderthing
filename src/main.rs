@@ -1,16 +1,10 @@
-pub mod lev;
-pub mod lv6;
-pub mod random;
-pub mod serde_blitz3d;
-pub mod time;
-
-use lev::*;
-use lv6::*;
-use random::*;
+use wonderthing::lev::*;
+use wonderthing::lv6::{self, *};
+use wonderthing::random::*;
 
 use std::fs;
 
-fn main() -> Result<(), lv6::Error> {
+fn main() -> Result<(), wonderthing::lv6::Lv6Error> {
     //let mut rng = Pcg32::from_current_time_and_address();
 
     /*
@@ -62,10 +56,10 @@ fn main() -> Result<(), lv6::Error> {
     })
 }
 
-pub fn convert_tow_to_lv6() -> Result<(), lv6::Error> {
+pub fn convert_tow_to_lv6() -> Result<(), lv6::Lv6Error> {
     let mut rng = Pcg32::from_current_time_and_address();
-    for entry in fs::read_dir("TOW-LEV").map_err(lv6::Error::InputOutput)? {
-        let entry = entry.map_err(lv6::Error::InputOutput)?;
+    for entry in fs::read_dir("TOW-LEV").map_err(lv6::Lv6Error::InputOutput)? {
+        let entry = entry.map_err(lv6::Lv6Error::InputOutput)?;
         println!("Converting {:?}", entry.path());
         let lev = Lev::from_file(entry.path())?;
         let mut lv6: Lv6 = lev.into();
@@ -76,13 +70,13 @@ pub fn convert_tow_to_lv6() -> Result<(), lv6::Error> {
     Ok(())
 }
 
-pub fn operate_on_folder<F, P: AsRef<std::path::Path>>(in_path: P, out_path: &str, mut f: F) -> Result<(), lv6::Error>
+pub fn operate_on_folder<F, P: AsRef<std::path::Path>>(in_path: P, out_path: &str, mut f: F) -> Result<(), lv6::Lv6Error>
 where
     F: FnMut(&mut Lv6)
 {
     let mut rng = Pcg32::from_current_time_and_address();
-    for entry in fs::read_dir(in_path).map_err(lv6::Error::InputOutput)? {
-        let entry = entry.map_err(lv6::Error::InputOutput)?;
+    for entry in fs::read_dir(in_path).map_err(lv6::Lv6Error::InputOutput)? {
+        let entry = entry.map_err(lv6::Lv6Error::InputOutput)?;
         let mut lv6 = Lv6::from_file(entry.path())?;
         f(&mut lv6);
         lv6.to_file(&mut rng, out_path)?;
